@@ -1,0 +1,167 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ *= require social-share-button
+ */
+ 
+a:hover{
+	cursor: pointer;
+	text-decoration: none;
+}
+
+nav.navbar-default{
+	box-shadow: none !important;
+	background-image: none !important;
+
+}
+
+.contact-section{
+	background: #fafafa;
+}
+.contact-us{
+	text-align: center;
+	padding: 30px 0;
+	margin: 30px 0;
+	background: #eceeef;
+	border-radius: 5px;
+}
+.contact-us *{
+	margin: 15px; 
+}
+.contact-us h1{
+	font-size: 35px;
+	font-weight: normal;
+}
+.contact-us p{
+	color: gray;
+	font-size: 18px;
+	font-weight: 200;
+}
+.contact-arrow{
+	background: #0275d8;
+}
+.contact-arrow:hover{
+	opacity: .75;
+	background: #0275d8;
+}
+#contact-map{
+	height: 500px;
+	margin-bottom: 20px;
+}
+.alert{
+	position: relative;
+	width: 100%;
+	height: 0px;
+	background: rgba(100, 100, 100, .5);
+	z-index: 99;
+}
+.alert-content{
+	width: 220px;
+	padding: 20px;
+	background: #c0392b;	
+	text-align: center;
+	color: white;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 150px;
+	border-radius: 5px;
+	font-weight: 300;
+}
+.contact-form{
+	width: 40%;
+	text-align: center;
+	margin-bottom: 40px;
+}
+.contact-form h1{
+	font-size: 30px;
+	font-weight: 200;
+}
+.contact-form *{
+	margin: 20px;
+}
+.contact-form input{
+	height: 40px;
+}
+.contact-form button{
+	height: 50px;
+	font-size: 27px;
+}
+.contact-form button span{
+	margin: 0;
+	width: 20px;
+}
+@media only screen and (max-width: 980px){
+	.contact-form{
+		width: 60%;		
+	}
+}
+
+@media only screen and (max-width: 700px){
+	.contact-form{
+		width: 100%;		
+	}
+	.contact-form *{
+		margin: 20px 0;
+	}
+}
+#email-alert{
+	display: none;
+	background: rgba(200, 0, 0, .6);
+    border-radius: 4px;
+    padding: 10px;
+    color: white;
+    width: 100%;
+}
+.social-modal{
+	display: none;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(10, 10, 10, .9);
+	z-index: 200;
+	position: fixed;
+	top: 0;
+	padding-top: 10%;
+	text-align: center;
+	color: white;	
+	overflow: scroll;	
+}
+.social-modal span{
+	font-size: 30px;
+	position: fixed;
+	right: 5px;
+	top: 5px;
+	-webkit-transition: ease all 1s; /* Safari */
+    transition: ease all 1s;
+}
+.social-modal span:hover{
+	cursor: pointer;
+    -ms-transform: scale(1.3)rotate(360deg); /* IE 9 */
+    -webkit-transform: scale(1.3)rotate(360deg); /* Safari */
+    transform: scale(1.3)rotate(360deg); 
+}
+.social-modal h1{
+	font-size: 60px;
+	font-weight: 300;
+	border-bottom: 1px solid white;
+	padding-bottom: 10px;
+}
+.social-modal .container{
+	display: none;
+}
+@media screen and (max-width: 360px){
+     .social-modal h1{
+     	font-size: 40px;
+     }
+}
+

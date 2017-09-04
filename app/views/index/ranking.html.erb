@@ -1,0 +1,179 @@
+<% provide(:title, "Top #{@category.name} in SF") %>
+<% provide(:body_class, "ranking-page") %>
+<!--Start of Banner section-->
+<section class="main-banner-section">
+    <div class="container-fluid no-padding">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <div class="category-title col-xs-12 col-sm-12 col-lg-12">
+                        <span class="category-name "><%= @category.name %></span>
+                        <!-- Food & Drink -->
+                        <span class="separator">|</span>
+                        <span class="date-container "> <%= DateTime.now.strftime "%B %Y" %></span>
+                    </div>
+                    <h1 class="places-container col-xs-12 col-sm-12 col-lg-12">10 Best <%= @category.name %> in SF</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--End of Banner section-->
+
+<!--Start of places list section-->
+<section class="places-list-section">
+<% @companies.each_with_index do |company, index| %>
+  <div class="social-modal">
+    <div class="container">
+      <h1>Share</h1>
+      <%= social_share_button_tag(company.name, :image => asset_path("images-places-#{index+1}.png")) %>
+      <span class="glyphicon glyphicon-remove-circle"></span>
+    </div>                          
+  </div>
+    <!--Start of place cont-->
+    <div class="container-fluid no-padding">
+        <div class="place-container container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-4 image-container no-padding hidden-sm hidden-xs">
+                        <%= link_to image_tag( "images-places-#{index+1}.png", class: 'img-responsive' ), place_path( url_code(Category.find(company.category).name), url_code( company.name ) ) %>                        
+                    </div>
+                    <div class="col-md-8 col-sm-12 col-xs-12 info-container">
+                        <div class="header-section">
+                            <div class="number-container"><%= index+1 %></div>
+                            <div class="separator"></div>
+                            <div class="name-container">
+                                <div class="title-container"><%= set_title company.name %></div>
+                                <div class="city-container"><span class="location-icon"></span><%= company.city %></div>
+                            </div>
+                            <div class="social-container">
+                                <div class="share-container">
+                                    <div class="share-button">
+                                        <%= link_to shareup_path( company.id ), remote: true do %>
+                                            <span class="text hidden-xs hidden-sm">Share</span>
+                                            <span class="share-icon"></span>
+                                            <span class="separator "></span>
+                                            <div class="share-count " id = "share-text-<%= company.id %>"><%= company.share %></div>
+                                        <% end %>
+                                    </div>
+
+                                </div>
+                                <div class="like-container">
+                                    <div class="like-button">
+                                        <%= link_to likeup_path( company.id ), remote: true do %>
+                                            <span class="text hidden-xs hidden-sm">Like</span>
+                                            <span class="like-icon"></span>
+                                            <span class="separator "></span>
+                                            <div class="like-count " id = "like-text-<%= company.id %>"><%= company.like %></div>
+                                        <% end %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-for-mobile hidden-lg hidden-md">
+                            <%= image_tag "images-places-#{index+1}.png", class: 'img-responsive' %>
+                        </div>
+                        <div class="main-text-container">
+                            <p>
+                              <strong><%= index+1 %> of 10 Best <%= Category.find(company.category).name %> in SF</strong> - Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                              do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                              nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                              dolor in reprehenderit in voluptate velit.
+                            </p>
+                        </div>
+                        <div class="buttons-container">
+                            <div class="learn-more-button"><%= link_to "LEARN MORE", place_path( url_code(Category.find(company.category).name), url_code( company.name ) ) %></div>
+                            <div class="go-to-website-button"><a href="#">GO TO WEBSITE</a></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end of place container-->                          
+<% end %>    
+</section>
+<!--End of places list section-->
+<!--google map section-->
+<section class="google-map-section">
+    <div class="container-fluid no-padding">
+        <div id="map"></div>
+    </div>
+</section>
+<% @positions.each_with_index do |position, index| %>
+  <div class="infobox-wrapper">
+      <div id="infobox-<%= index %>" class="infoBox">
+          <div class="google-map-arrow"></div>
+          <%= image_tag 'place-google-map.png', class: "col-md-4 col-xs-4 no-padding" %>
+              <div class="header-container col-md-8">
+                 <div class="title-container">
+                     <span class="title-text"><span style="color:#CF0F40; font-weight:bolder; font-size: 30px;"><%= index + 1 %> </span> <%= @companies[index].name %></span>
+                     <div class="location-container"><span class="location-icon"></span><%= position['address'] %></div>
+                 </div>
+                 <!-- <div class="directions-container"><a href="#">DIRECTIONS</a></div> -->
+                 <div class="footer-section">
+                     <div class="buttons-container">
+                         <a class="world-map" href="#"></a>
+                         <span class="separator"></span>
+                         <a class="mail" href="#"></a>
+                         <span class="separator"></span>
+                         <a class="phone" href="#"></a>
+                     </div>
+                 </div>
+             </div>
+
+      </div>
+  </div>
+<% end %>
+<script type="text/javascript">
+  function initialize() {
+        
+        var places = new Array();
+        <% @positions.each do |position| %>
+          places.push( new google.maps.LatLng(<%= position['lat'] %>, <%= position['lng'] %>) );
+        <% end %>
+        
+        var pointMarkerImage = new Array();//store image of marker in array
+        var pointMarker = new Array();//store marker in array
+
+        var icon = '<%= asset_path("icon-google-map.png") %>';
+        var iconHover = '<%= asset_path("icon-google-map-click.png") %>';
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14,
+            center: places[0],
+            panControl: false,
+            scrollwheel: false,
+            mapTypeId: google.maps.MapTypeId.ROADMAP            
+        });
+
+        var infoboxes = new Array();
+        for ( var i = 0; i < places.length; i++ ){
+            id = "infobox-" + i;
+            infoboxes[i] = new google.maps.InfoWindow({
+                                content: document.getElementById(id)
+                              });
+            pointMarkerImage[i] = new google.maps.MarkerImage('<%= asset_path("icon-google-map.png") %>');
+            pointMarker[i] = new google.maps.Marker({
+                position: places[i],
+                map: map,
+                icon: pointMarkerImage[i]
+            });
+            pointMarker[i].addListener('click', function(i) {
+                                          return function() {
+                                                      infoboxes[i].open(map, pointMarker[i]);
+                                                  }
+                                                }(i));
+        }
+
+    }
+
+</script>
+
+<script src="<%= Rails.application.secrets[:google_map_url] %>key=<%= Rails.application.secrets[:google_map_key] %>&callback=initialize" type="text/javascript"></script>
+<!-- <script type="text/javascript" src="https://cdn.rawgit.com/googlemaps/v3-utility-library/master/infobox/src/infobox.js"></script>  -->
+<!--end of google map section-->
+
+
+
